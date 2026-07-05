@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "Post": {
+      "title": "Post",
+      "description": "An editorial article or news post",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "content": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "publishDate": { "type": "string" },
+        "views": { "type": "number" },
+        "likes": { "type": "number" },
+        "isFeatured": { "type": "boolean" }
+      },
+      "required": ["title", "description", "category", "imageUrl"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "A user-authored comment on a news article",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "object" }
+      },
+      "required": ["postId", "userName", "text"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "A user-submitted contact or inquiry message",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "VisitorStats": {
+      "title": "VisitorStats",
+      "description": "Global or collection-level visitor stats",
+      "type": "object",
+      "properties": {
+        "viewsCount": { "type": "number" }
+      },
+      "required": ["viewsCount"]
+    }
+  },
+  "firestore": {
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Collection of anime/manga news and articles"
+    },
+    "/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Collection of article comments"
+    },
+    "/contactMessages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "Collection of contact form inquiries"
+    },
+    "/visitorStats/{statId}": {
+      "schema": "VisitorStats",
+      "description": "Collection tracking visitor counts"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net - Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    // --- 1. Posts Collection ---
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if true; // Allow client writes for admin panel operations and views/likes increments
+    }
+
+    // --- 2. Comments Collection ---
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if true; // Allow any user to post a comment
+      allow update, delete: if false;
+    }
+
+    // --- 3. Contact Messages Collection ---
+    match /contactMessages/{messageId} {
+      allow create: if true; // Allow any user to submit a contact form
+      allow read, update, delete: if false; // Clients should not be able to read contact messages
+    }
+
+    // --- 4. Visitor Stats Collection ---
+    match /visitorStats/{statId} {
+      allow read, write: if true; // Allow incrementing/reading the global visitor stats
+    }
+
+    // --- 5. Users Collection ---
+    match /users/{userId} {
+      allow read, write: if true; // Let user profiles be managed on client
+    }
+  }
+}
